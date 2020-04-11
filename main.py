@@ -12,7 +12,8 @@ app = Flask(__name__)
 
 # TODO: zoom link.
 def parse_event_info(event):
-    return {'summary': event['summary'],
+    return {'id': event['id'],
+            'summary': event['summary'],
             'start': event['start'].get('dateTime',
                                         event['start'].get('date')),
             'creator': event['creator']['email'],
