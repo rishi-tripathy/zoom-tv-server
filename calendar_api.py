@@ -2,6 +2,7 @@
 API for Google Calendar functions.
 """
 import ics
+import re
 
 
 # TODO: zoom link.
@@ -12,7 +13,10 @@ def parse_event_info(event):
                                         event['start'].get('date')),
             'end': event['end'].get('dateTime', event['end'].get('date')),
             'creator': event['creator']['email'],
-            'description': event.get('description')}
+            'description': get_description(event),
+            'tags': get_tags(event),
+            'zoom': get_zoom_link(event)
+            }
 
 
 def get_events(service, start_time, max_results):
@@ -43,3 +47,33 @@ def get_event_ics(service, event_id):
 
     calendar.events.add(event)
     return calendar
+
+
+def get_event_tags(event):
+    desc = event.get('description')
+    if desc:
+        tags = re.findall(r'#\w+', desc)
+        return [str(tag) for tag in tags]
+    return []
+
+
+def get_event_description(event):
+    desc = event.get('description')
+    if desc:
+        m = re.search(r'^.*?[(?=\\n──────────)$]', desc)
+        return m.group(0) if m else " "
+    return " "
+
+
+def get_zoom_link(event):
+    desc = event.get('description')
+    if desc:
+        dm = re.search(r'https.*$', desc)
+        if dm:
+            return dm.group(0)
+    loc = event.get('location')
+    if loc:
+        lm = re.search(r'https.*$', loc)
+        if lm:
+            return lm.group(0)
+    return " "
