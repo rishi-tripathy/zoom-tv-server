@@ -5,18 +5,9 @@ import calendar_api
 import datetime
 import json
 
-from flask import Flask
+from flask import Flask, Response
 
 app = Flask(__name__)
-
-
-# TODO: zoom link.
-def parse_event_info(event):
-    return {'summary': event['summary'],
-            'start': event['start'].get('dateTime',
-                                        event['start'].get('date')),
-            'creator': event['creator']['email'],
-            'description': event.get('description')}
 
 
 @app.route('/')
@@ -33,7 +24,17 @@ def events():
         service, start_time=now, max_results=100)
 
     json_dict = {'timeZone': time_zone,
-                 'events': [parse_event_info(e) for e in events]}
+                 'events': [calendar_api.parse_event_info(e) for e in events]}
     return json.dumps(json_dict)
 
+
+
+@app.route('/download_ics/<event_id>', methods=['GET'])
+def download_ics(event_id):
+    service = auth.get_calendar_service()
+    ics = calendar_api.get_event_ics(service, event_id)
+    return Response(
+        str(ics),
+        headers={"Content-disposition":
+                 "attachment; filename=event.ics"})
 
