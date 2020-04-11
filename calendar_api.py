@@ -13,8 +13,8 @@ def parse_event_info(event):
                                         event['start'].get('date')),
             'end': event['end'].get('dateTime', event['end'].get('date')),
             'creator': event['creator']['email'],
-            'description': get_description(event),
-            'tags': get_tags(event),
+            'description': get_event_description(event),
+            'tags': get_event_tags(event),
             'zoom': get_zoom_link(event)
             }
 
