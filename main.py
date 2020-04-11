@@ -36,3 +36,4 @@ def events():
                  'events': [parse_event_info(e) for e in events]}
     return json.dumps(json_dict)
 
+
