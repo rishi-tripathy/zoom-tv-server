@@ -35,3 +35,4 @@ def events():
     json_dict = {'timeZone': time_zone,
                  'events': [parse_event_info(e) for e in events]}
     return json.dumps(json_dict)
+
