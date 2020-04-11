@@ -9,4 +9,5 @@ def get_events(service, start_time, max_results):
         singleEvents=True, orderBy='startTime').execute()
     print(events_result)
     events = events_result.get('items', [])
-    return events
+    time_zone = events_result['timeZone']
+    return events, time_zone
