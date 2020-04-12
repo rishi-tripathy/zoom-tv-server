@@ -54,10 +54,13 @@
         <div> {{tags}} </div>
 
         <div className="spacer" style="height: 8px"> </div>
-        <button
-            style="font-weight: 500; color: white; background-color: #FF6347; border-radius: 8px; padding: 16px 8px 16px 8px;">
-            REMOVE EVENT
-        </button>
+        <form action="https://zoom-tv-guide.wl.r.appspot.com/delete_zoom" method="post">
+            <input type="hidden" id="event_id" name="event_id" value={{id}}>
+            <button type="submit"
+                style="font-weight: 500; color: white; background-color: #FF6347; border-radius: 8px; padding: 16px 8px 16px 8px;">
+                REMOVE EVENT
+            </button>
+        </form>
     </div>
 </body>
 

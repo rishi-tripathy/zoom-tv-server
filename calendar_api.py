@@ -4,7 +4,7 @@ API for Google Calendar functions.
 import ics
 import re
 
-# TODO: zoom link.
+
 def parse_event_info(event):
     return {'id': event['id'],
             'summary': event['summary'],
@@ -76,3 +76,7 @@ def get_zoom_link(event):
         if lm:
             return lm.group(0)
     return ""
+
+
+def delete_event(service, event_id):
+    service.events().delete(calendarId='primary', eventId=event_id).execute()
