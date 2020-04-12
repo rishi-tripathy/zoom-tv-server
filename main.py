@@ -22,10 +22,12 @@ def events():
     print('Getting the upcoming 10 events')
     events, time_zone = calendar_api.get_events(
         service, end_cap=now, max_results=100)
-
     json_dict = {'timeZone': time_zone,
                  'events': [calendar_api.parse_event_info(e) for e in events]}
-    return json.dumps(json_dict)
+    dump = json.dumps(json_dict)
+    resp = flask.Response(dump)
+    resp.headers["Access-Control-Allow-Origin"] = '*'
+    return resp
 
 
 @app.route('/download_ics/<event_id>', methods=['GET'])
@@ -34,5 +36,6 @@ def download_ics(event_id):
     ics = calendar_api.get_event_ics(service, event_id)
     return Response(
         str(ics),
-        headers={"Content-disposition":
+        headers={"Access-Control-Allow-Origin": "*",
+                 "Content-disposition":
                  "attachment; filename=event.ics"})
