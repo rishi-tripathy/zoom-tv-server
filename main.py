@@ -52,10 +52,7 @@ def events():
                 Please add one so people can find your event!".format(e.get('summary')),
                 recipients=[str(e['creator'])])
             mail.send(message)
-    dump = json.dumps(json_dict)
-    resp = Response(dump)
-    resp.headers["Access-Control-Allow-Origin"] = '*'
-    return resp
+    return json.dumps(json_dict)
 
 
 @app.route('/download_ics/<event_id>', methods=['GET'])
@@ -64,8 +61,7 @@ def download_ics(event_id):
     ics = calendar_api.get_event_ics(service, event_id)
     return Response(
         str(ics),
-        headers={"Access-Control-Allow-Origin": "*",
-                 "Content-disposition":
+        headers={"Content-disposition":
                  "attachment; filename=event.ics"})
 
 
