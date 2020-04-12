@@ -53,7 +53,7 @@ def get_event_tags(event):
     desc = event.get('description')
     if desc:
         tags = re.findall(r'#\w+', desc)
-        return [str(tag) for tag in tags]
+        return [str(tag)[1:] for tag in tags]
     return []
 
 
