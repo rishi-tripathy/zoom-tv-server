@@ -1,6 +1,6 @@
 runtime: python37
 handlers:
-- url: /events
+- url: '*'
   http_headers:
     Access-Control-Allow-Origin: '*'
 
