@@ -4,21 +4,22 @@ import auth
 import calendar_api
 import datetime
 import json
-import os
 
 from flask import Flask, Response, request
 import flask_mail
 
 app = Flask(__name__)
 
+mail_username, mail_password = auth.mail_creds()
 app.config.update(
     DEBUG=True,
     # EMAIL SETTINGS
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=465,
     MAIL_USE_SSL=True,
-    MAIL_USERNAME=os.environ.get('MAIL_USERNAME'),
-    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD'))
+    MAIL_DEFAULT_SENDER='zoom.tv.guide@gmail.com',
+    MAIL_USERNAME=mail_username,
+    MAIL_PASSWORD=mail_password)
 
 
 @app.route('/')
@@ -51,8 +52,6 @@ def download_ics(event_id):
 
 @app.route('/report', methods=['POST'])
 def report():
-    print(os.environ.get('MAIL_USERNAME'))
-    print(os.environ.get('MAIL_PASSWORD'))
     req_json = request.get_json()
     event_id = req_json.get('eventId')
     # Send email
@@ -60,6 +59,6 @@ def report():
     message = flask_mail.Message(
         subject='Zoom Event Reported',
         body='Event ID: %s' % event_id,
-        recipients='zoom.tv.guide@gmail.com')
+        recipients=['zoom.tv.guide@gmail.com'])
     mail.send(message)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
