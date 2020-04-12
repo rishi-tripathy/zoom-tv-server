@@ -19,6 +19,8 @@ def parse_event_info(event):
             }
 
 
+# TODO: share person has to be same as zoom meeting owner
+# If it doesn't have a zoom link
 def get_events(service, start_time, max_results):
     """Gets multiple events."""
     events_result = service.events().list(

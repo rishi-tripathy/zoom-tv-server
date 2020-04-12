@@ -4,10 +4,21 @@ import auth
 import calendar_api
 import datetime
 import json
+import os
 
-from flask import Flask, Response
+from flask import Flask, Response, request
+import flask_mail
 
 app = Flask(__name__)
+
+app.config.update(
+    DEBUG=True,
+    # EMAIL SETTINGS
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME=os.environ.get('MAIL_USERNAME'),
+    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD'))
 
 
 @app.route('/')
@@ -15,7 +26,7 @@ def hello_world():
     return 'Hello, world!'
 
 
-@app.route('/events')
+@app.route('/events', methods=['GET'])
 def events():
     service = auth.get_calendar_service()
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
@@ -28,7 +39,6 @@ def events():
     return json.dumps(json_dict)
 
 
-
 @app.route('/download_ics/<event_id>', methods=['GET'])
 def download_ics(event_id):
     service = auth.get_calendar_service()
@@ -38,3 +48,18 @@ def download_ics(event_id):
         headers={"Content-disposition":
                  "attachment; filename=event.ics"})
 
+
+@app.route('/report', methods=['POST'])
+def report():
+    print(os.environ.get('MAIL_USERNAME'))
+    print(os.environ.get('MAIL_PASSWORD'))
+    req_json = request.get_json()
+    event_id = req_json.get('eventId')
+    # Send email
+    mail = flask_mail.Mail(app)
+    message = flask_mail.Message(
+        subject='Zoom Event Reported',
+        body='Event ID: %s' % event_id,
+        recipients='zoom.tv.guide@gmail.com')
+    mail.send(message)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
