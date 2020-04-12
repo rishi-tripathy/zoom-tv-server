@@ -4,7 +4,6 @@ API for Google Calendar functions.
 import ics
 import re
 
-
 # TODO: zoom link.
 def parse_event_info(event):
     return {'id': event['id'],
@@ -62,7 +61,7 @@ def get_event_description(event):
     if desc:
         m = re.search(r'^.*?[(?=\\n──────────)$]', desc)
         return m.group(0) if m else " "
-    return " "
+    return ""
 
 
 def get_zoom_link(event):
@@ -76,4 +75,4 @@ def get_zoom_link(event):
         lm = re.search(r'https.*$', loc)
         if lm:
             return lm.group(0)
-    return " "
+    return ""
