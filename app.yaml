@@ -2,5 +2,5 @@ runtime: python37
 handlers:
 - url: /events
   http_headers:
-    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Origin: '*'
 
