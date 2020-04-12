@@ -89,5 +89,17 @@ def delete_event():
     """Removes calendar event with specified eventId."""
     service = auth.get_calendar_service()
     event_id = request.form.get('event_id')
+    event = calendar_api.get_event(service, event_id)
+    event_info = calendar_api.parse_event_info(event)
     calendar_api.delete_event(service, event_id)
-    return "Event %s was successfully removed." % event_id
+
+    # Send email to whoever's event it was notifying them.
+    mail = flask_mail.Mail(app)
+    message = flask_mail.Message(
+        subject='Your Zoom Event was Removed',
+        html=render_template('removed_event.html', **event_info),
+        recipients=[event_info['creator']])
+    mail.send(message)
+
+    return "Event %s with ID %s was successfully removed." % (
+        event_info['summary'], event_id)
