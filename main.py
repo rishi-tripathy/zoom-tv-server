@@ -38,7 +38,7 @@ def events():
     json_dict = {'timeZone': time_zone,
                  'events': [calendar_api.parse_event_info(e) for e in events]}
     dump = json.dumps(json_dict)
-    resp = flask.Response(dump)
+    resp = Response(dump)
     resp.headers["Access-Control-Allow-Origin"] = '*'
     return resp
 
