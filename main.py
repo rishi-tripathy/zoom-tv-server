@@ -36,11 +36,11 @@ def events():
     service = auth.get_calendar_service()
     now = (datetime.datetime.utcnow()-datetime.timedelta(hours=1)
            ).isoformat() + 'Z'  # 'Z' indicates UTC time
-    print('Getting the upcoming 10 events')
+    print('Getting the upcoming 100 events')
     events, time_zone = calendar_api.get_events(
         service, end_cap=now, max_results=100)
     json_dict = {'timeZone': time_zone,
-                 'events': [calendar_api.parse_event_info(e) for e in events]}
+                 'events': sorted([calendar_api.parse_event_info(e) for e in events], key=lambda e: e['start'])}
     for e in json_dict.get('events'):
         if e.get('zoom') == "":
             # No zoom link found, send email

@@ -14,7 +14,8 @@ def parse_event_info(event):
             'creator': event['creator']['email'],
             'description': get_event_description(event),
             'tags': get_event_tags(event),
-            'zoom': get_zoom_link(event)
+            'zoom': get_zoom_link(event),
+            'recurrence': event.get('recurrence')
             }
 
 
@@ -22,7 +23,7 @@ def get_events(service, end_cap, max_results):
     """Gets multiple events."""
     events_result = service.events().list(
         calendarId='primary', timeMin=end_cap, maxResults=max_results,
-        singleEvents=True, orderBy='startTime').execute()
+        singleEvents=False).execute()
     events = events_result.get('items', [])
     time_zone = events_result['timeZone']
     return events, time_zone
