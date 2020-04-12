@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .event-card {
+            border-radius: 8px;
+            padding: 16px 24px 16px 24px;
+            background-color: #F7F6F3;
+            font-size: 14px;
+        }
+
+        .card-header {
+            font-family: 'IBM Plex Serif';
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-subheader {
+            color: #AAA9A5;
+            font-weight: 500;
+        }
+
+        .spacer {
+            height: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div className="event-card"
+        style="width: 300px; border-radius: 8px; padding: 16px 24px 16px 24px; background-color: #F7F6F3; font-size: 14px;">
+        <div className="card-header" style="font-size: 18px; font-weight: 600;">{{summary}}</div>
+
+        <div className="spacer" style="height: 8px"> </div>
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> EVENT ID </div>
+        <div> {{id}} </div>
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> INVITE FROM </div>
+        <div> {{creator}} </div>
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> DESCRIPTION</div>
+        <div> {{description}} </div>
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> ZOOM LINK </div>
+        <div> {{zoom}} </div>
+
+        <div className="spacer" style="height: 8px"> </div>
+
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> START TIME </div>
+        <div> {{start}} </div>
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> END TIME </div>
+        <div> {{end}} </div>
+
+        <div className="spacer" style="height: 8px"> </div>
+        <div className="card-subheader" style="color: #AAA9A5; font-weight: 500"> TAGS </div>
+        <div> {{tags}} </div>
+
+        <div className="spacer" style="height: 8px"> </div>
+        <button
+            style="font-weight: 500; color: white; background-color: #FF6347; border-radius: 8px; padding: 16px 8px 16px 8px;">
+            REMOVE EVENT
+        </button>
+    </div>
+</body>
+
+</html>

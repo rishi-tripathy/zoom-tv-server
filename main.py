@@ -5,7 +5,7 @@ import calendar_api
 import datetime
 import json
 
-from flask import Flask, Response, request
+from flask import Flask, Response, render_template, request
 import flask_mail
 
 app = Flask(__name__)
@@ -56,13 +56,16 @@ def download_ics(event_id):
 
 @app.route('/report', methods=['POST'])
 def report():
+    service = auth.get_calendar_service()
     req_json = request.get_json()
     event_id = req_json.get('eventId')
     # Send email
+    event = calendar_api.get_event(service, event_id)
+    event_info = calendar_api.parse_event_info(event)
     mail = flask_mail.Mail(app)
     message = flask_mail.Message(
         subject='Zoom Event Reported',
-        body='Event ID: %s' % event_id,
+        html=render_template('report_event.html', **event_info),
         recipients=['zoom.tv.guide@gmail.com'])
     mail.send(message)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
