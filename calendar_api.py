@@ -60,20 +60,25 @@ def get_event_tags(event):
 def get_event_description(event):
     desc = event.get('description')
     if desc:
-        m = re.search(r'^.*?[(?=\\n──────────)$]', desc)
-        return m.group(0) if m else " "
+        m = re.search(r'^[\S\s]*?(?=(─|$))', desc)
+        if m:
+            match = m.group(0)
+            match = match.replace("<br>", " ")
+            match = match.replace("\\n", " ")
+            print(match)
+            return match
     return ""
 
 
 def get_zoom_link(event):
     desc = event.get('description')
     if desc:
-        dm = re.search(r'https.*$', desc)
+        dm = re.search(r'https.*?($|\")', desc)
         if dm:
             return dm.group(0)
     loc = event.get('location')
     if loc:
-        lm = re.search(r'https.*$', loc)
+        lm = re.search(r'https.*?($|\")', loc)
         if lm:
             return lm.group(0)
     return ""
