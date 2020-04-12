@@ -1,4 +1,4 @@
-import pickle
+import json
 import os
 import os.path
 from google.oauth2 import service_account
@@ -14,19 +14,20 @@ SERVICE_ACCOUNT_FILE = 'secrets/token.json'
 
 def calendar_service_creds():
     """Gets the host, username, and password from Datastore."""
-    try:
-        # Get auth variables from cloud datastore.
-        datastore_client = datastore.Client()
-        query = datastore_client.query(kind='GaeEnvSettings')
-        env_vars = list(query.fetch())[0]
-        token = json.loads(env_vars['TOKEN_JSON'])
-        return service_account.Credentials.from_service_account_info(
-            token
-        )
+    # Get auth variables from cloud datastore.
+    datastore_client = datastore.Client()
+    query = datastore_client.query(kind='GaeEnvSettings')
+    env_vars = list(query.fetch())[0]
+    token = json.loads(env_vars['TOKEN_JSON'])
+    return service_account.Credentials.from_service_account_info(
+        token
+    )
+    """
     except:
         return service_account.Credentials.from_service_account_file(
             SERVICE_ACCOUNT_FILE, scopes=SCOPES
         )
+    """
 
 
 def mail_creds():
