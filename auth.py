@@ -22,12 +22,10 @@ def calendar_service_creds():
     return service_account.Credentials.from_service_account_info(
         token
     )
-    """
     except:
         return service_account.Credentials.from_service_account_file(
             SERVICE_ACCOUNT_FILE, scopes=SCOPES
         )
-    """
 
 
 def mail_creds():
