@@ -2,5 +2,5 @@ runtime: python37
 handlers:
 - url: /events
   http_headers:
-    Access-Control-Allow-Origin: https://mygame.uc.r.appspot.com
+    Access-Control-Allow-Origin: *
 
