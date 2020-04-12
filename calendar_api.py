@@ -19,10 +19,10 @@ def parse_event_info(event):
             }
 
 
-def get_events(service, start_time, max_results):
+def get_events(service, end_cap, max_results):
     """Gets multiple events."""
     events_result = service.events().list(
-        calendarId='primary', timeMin=start_time, maxResults=max_results,
+        calendarId='primary', timeMin=end_cap, maxResults=max_results,
         singleEvents=True, orderBy='startTime').execute()
     events = events_result.get('items', [])
     time_zone = events_result['timeZone']
