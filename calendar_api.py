@@ -65,7 +65,6 @@ def get_event_description(event):
             match = m.group(0)
             match = match.replace("<br>", " ")
             match = match.replace("\\n", " ")
-            print(match)
             return match
     return ""
 

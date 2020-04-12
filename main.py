@@ -6,12 +6,14 @@ import datetime
 import json
 from flask import Flask, Response, render_template, request
 import flask_mail
+from flask_cors import CORS
 
 SUCCESS_STATUS = json.dumps({'success': True}), 200, {
     'ContentType': 'application/json'
 }
 
 app = Flask(__name__)
+cors = CORS(app)
 
 mail_username, mail_password = auth.mail_creds()
 app.config.update(
@@ -34,8 +36,8 @@ def hello_world():
 @app.route('/events', methods=['GET'])
 def events():
     service = auth.get_calendar_service()
-    now = (datetime.datetime.utcnow()-datetime.timedelta(hours=1)
-           ).isoformat() + 'Z'  # 'Z' indicates UTC time
+    now = (datetime.datetime.utcnow()).isoformat() + \
+        'Z'  # 'Z' indicates UTC time
     print('Getting the upcoming 100 events')
     events, time_zone = calendar_api.get_events(
         service, end_cap=now, max_results=100)
@@ -71,7 +73,7 @@ def download_ics(event_id):
 def report():
     service = auth.get_calendar_service()
     req_json = request.get_json()
-    event_id = req_json.get('eventId')
+    event_id = req_json['body']['eventId']
     # Send email
     event = calendar_api.get_event(service, event_id)
     event_info = calendar_api.parse_event_info(event)
