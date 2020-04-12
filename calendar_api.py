@@ -73,12 +73,12 @@ def get_zoom_link(event):
     desc = event.get('description')
     if desc:
         dm = re.search(r'https.*?($|\")', desc)
-        if dm:
+        if dm and "zoom" in dm.group(0):
             return dm.group(0)
     loc = event.get('location')
     if loc:
         lm = re.search(r'https.*?($|\")', loc)
-        if lm:
+        if lm and "zoom" in lm.group(0):
             return lm.group(0)
     return ""
 

@@ -48,7 +48,7 @@ def events():
             # No zoom link found, send email
             message = flask_mail.Message(
                 subject='No Link included in your ZoomTV Event',
-                body="Your ZoomTV event titled {} doesn't seem to have a Zoom link in the location or description. \
+                body="Your zoomTV event titled {} doesn't seem to have a Zoom link in the location or description. \
                 Please add one so people can find your event!".format(e.get('summary')),
                 recipients=[str(e['creator'])])
             mail.send(message)
