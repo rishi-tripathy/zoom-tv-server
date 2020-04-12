@@ -59,7 +59,7 @@ def get_event_tags(event):
 def get_event_description(event):
     desc = event.get('description')
     if desc:
-        m = re.search(r'^[\S\s]*?(?=[─])', desc)
+        m = re.search(r'^[\S\s]*?(?=(─|$))', desc)
         if m:
             match = m.group(0)
             match = match.replace("<br>", " ")
