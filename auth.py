@@ -14,15 +14,17 @@ SERVICE_ACCOUNT_FILE = 'secrets/token.json'
 
 def calendar_service_creds():
     """Gets the host, username, and password from Datastore."""
-    # Get auth variables from cloud datastore.
-    datastore_client = datastore.Client()
-    query = datastore_client.query(kind='GaeEnvSettings')
-    env_vars = list(query.fetch())[0]
-    token = json.loads(env_vars['TOKEN_JSON'])
-    return service_account.Credentials.from_service_account_info(
-        token
-    )
+    try:
+        # Get auth variables from cloud datastore.
+        datastore_client = datastore.Client()
+        query = datastore_client.query(kind='GaeEnvSettings')
+        env_vars = list(query.fetch())[0]
+        token = json.loads(env_vars['TOKEN_JSON'])
+        return service_account.Credentials.from_service_account_info(
+            token
+        )
     except:
+        # If running locally
         return service_account.Credentials.from_service_account_file(
             SERVICE_ACCOUNT_FILE, scopes=SCOPES
         )
