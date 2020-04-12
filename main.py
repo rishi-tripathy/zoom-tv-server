@@ -4,7 +4,6 @@ import auth
 import calendar_api
 import datetime
 import json
-
 from flask import Flask, Response, render_template, request
 import flask_mail
 
@@ -20,6 +19,7 @@ app.config.update(
     MAIL_DEFAULT_SENDER='zoom.tv.guide@gmail.com',
     MAIL_USERNAME=mail_username,
     MAIL_PASSWORD=mail_password)
+mail = flask_mail.Mail(app)
 
 
 @app.route('/')
@@ -37,6 +37,15 @@ def events():
         service, end_cap=now, max_results=100)
     json_dict = {'timeZone': time_zone,
                  'events': [calendar_api.parse_event_info(e) for e in events]}
+    for e in json_dict.get('events'):
+        if e.get('zoom') is "":
+            # No zoom link found, send email
+            message = flask_mail.Message(
+                subject='No Link included in your ZoomTV Event',
+                body="Your ZoomTV event titled {} doesn't seem to have a Zoom link in the location or description. \
+                Please add one so people can find your event!".format(e.get('summary')),
+                recipients=[str(e['creator'])])
+            mail.send(message)
     dump = json.dumps(json_dict)
     resp = Response(dump)
     resp.headers["Access-Control-Allow-Origin"] = '*'
