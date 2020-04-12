@@ -18,10 +18,10 @@ def hello_world():
 @app.route('/events')
 def events():
     service = auth.get_calendar_service()
-    now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    now = datetime.datetime.utcnow()-datetime.timedelta(hours-1).isoformat() + 'Z'  # 'Z' indicates UTC time
     print('Getting the upcoming 10 events')
     events, time_zone = calendar_api.get_events(
-        service, start_time=now, max_results=100)
+        service, timeMin=now, max_results=100)
 
     json_dict = {'timeZone': time_zone,
                  'events': [calendar_api.parse_event_info(e) for e in events]}
