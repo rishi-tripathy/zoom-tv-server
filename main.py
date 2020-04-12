@@ -28,7 +28,6 @@ def events():
     return json.dumps(json_dict)
 
 
-
 @app.route('/download_ics/<event_id>', methods=['GET'])
 def download_ics(event_id):
     service = auth.get_calendar_service()
@@ -37,4 +36,3 @@ def download_ics(event_id):
         str(ics),
         headers={"Content-disposition":
                  "attachment; filename=event.ics"})
-
